@@ -1,0 +1,4 @@
+DB_NAME: quiz_master
+DB_USER: tooku
+DB_HOST: localhost
+DB_PASS: tooku2018@idcloud
