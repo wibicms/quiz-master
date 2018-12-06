@@ -47,6 +47,29 @@ RSpec.describe "Questions", :type => :request do
     end
   end
 
+  describe 'POST /api/v1/questions/{id}/answer' do
+
+    it "answers with number" do
+      body = JSON.parse(response.body)
+      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 4}
+      expect(response).to have_http_status 200
+
+      resp = JSON.parse(response.body)
+      expect(resp['message']).to eq('CORRECT')
+    end
+
+    it "answers with number" do
+      body = JSON.parse(response.body)
+      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'five'}
+      expect(response).to have_http_status 200
+
+      resp = JSON.parse(response.body)
+      expect(resp['message']).to eq('CORRECT')
+    end
+
+
+  end
+
   describe 'DELETE /api/v1/questions/{id}' do
     before do
       body = JSON.parse(response.body)

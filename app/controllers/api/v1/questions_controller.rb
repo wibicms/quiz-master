@@ -21,9 +21,27 @@ class Api::V1::QuestionsController < Api::V1::ApiController
     render 'api/v1/global/destroy.json.jbuilder', status: 200
   end
 
+  def answer
+    question = Question.find(params[:id])
+    if params[:answer] == question.answer
+      render json: {status: 200, message: 'CORRECT'}, status: 200
+    else
+      render json: {status: 200, message: 'INCORRECT'}, status: 200
+    end
+  end
+
   private
   def question_params
     params.require(:question).permit(:content, :answer)
+  end
+
+  def is_correct?(a, b)
+    if a.downcase == b.downcase
+      return true
+    elsif a.to_f == b.to_f
+      return true
+      elsif number_to_human(a) == b.downcase
+    end
   end
 
 end
