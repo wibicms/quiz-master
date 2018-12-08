@@ -58,13 +58,42 @@ RSpec.describe "Questions", :type => :request do
       expect(resp['message']).to eq('CORRECT')
     end
 
-    it "answers with number" do
+    it "answers with string" do
+      body = JSON.parse(response.body)
+      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'four'}
+      expect(response).to have_http_status 200
+
+      resp = JSON.parse(response.body)
+      expect(resp['message']).to eq('CORRECT')
+    end
+
+    it "answers with string non-case-sensitive" do
+      body = JSON.parse(response.body)
+      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'FOur'}
+      expect(response).to have_http_status 200
+
+      resp = JSON.parse(response.body)
+      expect(resp['message']).to eq('CORRECT')
+    end
+
+    it "answers with wrong number" do
+      body = JSON.parse(response.body)
+      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 5}
+      expect(response).to have_http_status 200
+
+      resp = JSON.parse(response.body)
+      expect(resp['message']).to eq('INCORRECT')
+    end
+
+
+
+    it "answers with wrong string" do
       body = JSON.parse(response.body)
       post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'five'}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
-      expect(resp['message']).to eq('CORRECT')
+      expect(resp['message']).to eq('INCORRECT')
     end
 
 

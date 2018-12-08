@@ -23,7 +23,7 @@ class Api::V1::QuestionsController < Api::V1::ApiController
 
   def answer
     question = Question.find(params[:id])
-    if params[:answer] == question.answer
+    if is_correct?(question.answer, params[:answer])
       render json: {status: 200, message: 'CORRECT'}, status: 200
     else
       render json: {status: 200, message: 'INCORRECT'}, status: 200
@@ -40,7 +40,12 @@ class Api::V1::QuestionsController < Api::V1::ApiController
       return true
     elsif a.to_f == b.to_f
       return true
-      elsif number_to_human(a) == b.downcase
+    elsif I18n.with_locale(:en) { a.to_f.to_words remove_hyphen: true } == b.downcase
+      return true
+    elsif a.downcase == I18n.with_locale(:en) { a.to_f.to_words remove_hyphen: true }
+      return true
+    else
+      return false
     end
   end
 
