@@ -14,4 +14,7 @@ Rails.application.routes.draw do
 
   resources :questions, only:[:index, :new, :edit]
   resources :quiz, only:[:index]
+
+  root to: 'questions#index'
+
 end

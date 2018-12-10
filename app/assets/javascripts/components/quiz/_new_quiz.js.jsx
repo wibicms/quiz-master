@@ -6,17 +6,16 @@ class NewQuiz extends React.Component {
       id: '',
       content: '',
       answer: '',
-      message: ''
+      message: '',
+      alertStatus: 'success'
     };
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleQuestion = this.handleQuestion.bind(this)
   }
 
   componentDidMount() {
-    axios.get('/api/v1/questions/random')
-    .then(response => {
-      this.setState({id: response.data.id, content: response.data.content, answer: response.data.answer})
-    }).catch(error => console.log(error))
+    this._getData();
   }
 
   handleChange(e) {
@@ -31,6 +30,11 @@ class NewQuiz extends React.Component {
       answer: this.state.answer
     }).then(response => {
       if (response.status == 200) {
+        if(response.data.message =='CORRECT'){
+          this.setState({alertStatus: 'success'});
+        }else{
+          this.setState({alertStatus: 'warning'});
+        }
         this.setState({message: response.data.message});
       } else {
         this.setState({message: 'There is a problem, please try again.'});
@@ -38,19 +42,38 @@ class NewQuiz extends React.Component {
     }).catch(error => console.log(error));
   }
 
+  handleQuestion(){
+    this._getData();
+  }
+
+  _getData(){
+    axios.get('/api/v1/questions/random')
+    .then(response => {
+      this.setState({id: response.data.id, content: response.data.content, answer: response.data.answer})
+    }).catch(error => console.log(error))
+  }
+
   render() {
-    return (<div>
-      <h1>Quiz!!</h1>
-      <p>{this.state.message}</p>
-      <div>
-        <label>Content</label>
-        <input type="text" name="content" value={this.state.content} onChange={this.handleChange}/>
-      </div>
-      <div>
-        <label>Answer</label>
-        <input type="text" name="answer" onChange={this.handleChange}/>
-      </div>
-      <input type="submit" value="Save" onClick={this.handleSubmit}/>
+    return (
+      <div className="col-sm-6">
+        <h1>Quiz!!!</h1>
+          { this.state.message != "" ?
+            <div className={"alert alert-"+this.state.alertStatus} role="alert">
+              {this.state.message}
+            </div>
+            : ''
+          }
+        <div className="form-group">
+          <label>Content</label>
+          <input type="text" name="content" value={this.state.content} className="form-control" onChange={this.handleChange}/>
+        </div>
+        <div className="form-group">
+          <label>Answer</label>
+          <input type="text" name="answer" placeholder="Puts Your Answer" className="form-control" onChange={this.handleChange}/>
+        </div>
+        <input type="submit" value="Check Your Answer" className="btn btn-primary" onClick={this.handleSubmit}/>
+        <span>     </span>
+        <input type="button" value="Try Other Question" className="btn btn-primary" onClick={this.handleQuestion}/>
     </div>)
   }
 }

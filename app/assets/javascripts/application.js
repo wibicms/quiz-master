@@ -17,4 +17,6 @@
 //= require react_ujs
 //= require components
 //= require axios/dist/axios
+//= require jquery
+//= require bootstrap-sprockets
 //= require_tree .
