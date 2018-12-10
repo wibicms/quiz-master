@@ -12,7 +12,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "return created user" do
       body = JSON.parse(response.body)
-      expect(body['data']).not_to be_empty
+      expect(body).not_to be_empty
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.describe "Questions", :type => :request do
   describe 'GET /api/v1/questions/{id}' do
     before do
       body = JSON.parse(response.body)
-      get "/api/v1/questions/#{body['data']['id']}"
+      get "/api/v1/questions/#{body['id']}"
     end
 
     it "return success status" do
@@ -50,7 +50,7 @@ RSpec.describe "Questions", :type => :request do
   describe 'PUT /api/v1/questions/{id}' do
     before do
       body = JSON.parse(response.body)
-      put "/api/v1/questions/#{body['data']['id']}", params: {question: {content: '4x1 equals ?', answer: 4 }}
+      put "/api/v1/questions/#{body['id']}", params: {question: {content: '4x1 equals ?', answer: 4 }}
     end
 
     it "return success status" do
@@ -67,7 +67,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "answers with number" do
       body = JSON.parse(response.body)
-      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 4}
+      post "/api/v1/questions/#{body['id']}/answer", params: {answer: 4}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
@@ -76,7 +76,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "answers with string" do
       body = JSON.parse(response.body)
-      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'four'}
+      post "/api/v1/questions/#{body['id']}/answer", params: {answer: 'four'}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
@@ -85,7 +85,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "answers with string non-case-sensitive" do
       body = JSON.parse(response.body)
-      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'FOur'}
+      post "/api/v1/questions/#{body['id']}/answer", params: {answer: 'FOur'}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
@@ -94,7 +94,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "answers with wrong number" do
       body = JSON.parse(response.body)
-      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 5}
+      post "/api/v1/questions/#{body['id']}/answer", params: {answer: 5}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
@@ -105,7 +105,7 @@ RSpec.describe "Questions", :type => :request do
 
     it "answers with wrong string" do
       body = JSON.parse(response.body)
-      post "/api/v1/questions/#{body['data']['id']}/answer", params: {answer: 'five'}
+      post "/api/v1/questions/#{body['id']}/answer", params: {answer: 'five'}
       expect(response).to have_http_status 200
 
       resp = JSON.parse(response.body)
@@ -118,7 +118,7 @@ RSpec.describe "Questions", :type => :request do
   describe 'DELETE /api/v1/questions/{id}' do
     before do
       body = JSON.parse(response.body)
-      delete "/api/v1/questions/#{body['data']['id']}"
+      delete "/api/v1/questions/#{body['id']}"
     end
 
     it "it deletes question" do
