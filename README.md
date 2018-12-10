@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is simple CRUD using Rails and Reactjs
 
-Things you may want to cover:
 
-* Ruby version
+#Installation and Setup
+After cloning to your workspace, please rename file ```application.yml.tmp``` under config folder to ```application.yml``` and fill content with your database environment then run ```bunlde install``` to perform installation of libraries and dependencies of rails. Then run ```yarn``` to install Javascript library.
 
-* System dependencies
+#Migration and Seeding
+After performing ```bunlde install``` and ```yarn``` you have to run ```rake db:migrate``` in order to create tables.
+You may run seed to fill data by run ```rake db:seed```
 
-* Configuration
+#Running
+To run in development environment please run ```rails s```. Be default you can open at http://localhost:3000
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+#Testing
+This app comes with rspec testing. You can run test by running ```rpsec```
