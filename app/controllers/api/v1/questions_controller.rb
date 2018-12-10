@@ -15,6 +15,11 @@ class Api::V1::QuestionsController < Api::V1::ApiController
     render 'api/v1/questions/show.json.jbuilder', status: 200
   end
 
+  def random
+    @question = Question.find(Question.pluck(:id).sample)
+    render 'api/v1/questions/show.json.jbuilder', status: 200
+  end
+
   def update
     @question = Question.find(params[:id])
     @question.update_attributes(question_params)
@@ -30,9 +35,9 @@ class Api::V1::QuestionsController < Api::V1::ApiController
   def answer
     question = Question.find(params[:id])
     if is_correct?(question.answer, params[:answer])
-      render json: {status: 200, message: 'CORRECT'}, status: 200
+      render json: {message: 'CORRECT'}, status: 200
     else
-      render json: {status: 200, message: 'INCORRECT'}, status: 200
+      render json: {message: 'INCORRECT'}, status: 200
     end
   end
 
@@ -48,7 +53,7 @@ class Api::V1::QuestionsController < Api::V1::ApiController
       return true
     elsif I18n.with_locale(:en) { a.to_f.to_words remove_hyphen: true } == b.downcase
       return true
-    elsif a.downcase == I18n.with_locale(:en) { a.to_f.to_words remove_hyphen: true }
+    elsif a.downcase == I18n.with_locale(:en) { b.to_f.to_words remove_hyphen: true }
       return true
     else
       return false
