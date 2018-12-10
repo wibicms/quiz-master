@@ -15,6 +15,12 @@ class Api::V1::QuestionsController < Api::V1::ApiController
     render 'api/v1/questions/show.json.jbuilder', status: 200
   end
 
+  def update
+    @question = Question.find(params[:id])
+    @question.update_attributes(question_params)
+    render 'api/v1/questions/show.json.jbuilder', status: 200
+  end
+
   def destroy
     question = Question.find(params[:id])
     question.destroy

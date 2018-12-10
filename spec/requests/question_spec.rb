@@ -47,6 +47,22 @@ RSpec.describe "Questions", :type => :request do
     end
   end
 
+  describe 'PUT /api/v1/questions/{id}' do
+    before do
+      body = JSON.parse(response.body)
+      put "/api/v1/questions/#{body['data']['id']}", params: {question: {content: '4x1 equals ?', answer: 4 }}
+    end
+
+    it "return success status" do
+      expect(response).to have_http_status 200
+    end
+
+    it "return a question" do
+      body = JSON.parse(response.body)
+      expect(body).not_to be_empty
+    end
+  end
+
   describe 'POST /api/v1/questions/{id}/answer' do
 
     it "answers with number" do
