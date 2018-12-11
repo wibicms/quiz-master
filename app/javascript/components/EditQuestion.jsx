@@ -1,3 +1,10 @@
+import React from 'react';
+import axios from 'axios';
+
+import {EditorState, ContentState} from 'draft-js';
+import {Editor} from 'react-draft-wysiwyg';
+import htmlToDraft from 'html-to-draftjs';
+
 class EditQuestion extends React.Component {
 
   constructor(props) {
@@ -7,7 +14,8 @@ class EditQuestion extends React.Component {
       content: '',
       answer: '',
       message: '',
-      alertStatus: 'success'
+      alertStatus: 'success',
+      editorState: EditorState.createEmpty()
     };
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -15,7 +23,12 @@ class EditQuestion extends React.Component {
 
   componentDidMount() {
     axios.get('/api/v1/questions/' + this.state.id).then(response => {
-      this.setState({content: response.data.content, answer: response.data.answer})
+      let contentBlock = htmlToDraft(response.data.content);
+      if (contentBlock) {
+        let contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+        let editorState = EditorState.createWithContent(contentState);
+        this.setState({content: response.data.content, answer: response.data.answer, editorState})
+      }
     }).catch(error => console.log(error))
   }
 
@@ -41,6 +54,10 @@ class EditQuestion extends React.Component {
     }).catch(error => console.log(error));
   }
 
+  onEditorStateChange = (editorState) => {
+    this.setState({editorState});
+  }
+
   render() {
     return (
       <div className="col-sm-6">
@@ -53,7 +70,7 @@ class EditQuestion extends React.Component {
           }
         <div className="form-group">
           <label>Content</label>
-          <input type="text" name="content" value={this.state.content} className="form-control" onChange={this.handleChange}/>
+          <Editor editorState={this.state.editorState} wrapperClassName="demo-wrapper" editorClassName="editer-content" onEditorStateChange={this.onEditorStateChange}/>
         </div>
         <div className="form-group">
           <label>Answer</label>
@@ -63,3 +80,5 @@ class EditQuestion extends React.Component {
     </div>)
   }
 }
+
+export default EditQuestion;

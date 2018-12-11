@@ -1,3 +1,5 @@
+import React from 'react';
+import axios from 'axios';
 class Question extends React.Component {
 
     constructor(props) {
@@ -92,7 +94,7 @@ class QuestionItem extends React.Component {
     return(
       <tr>
         <td>{this.props.number}</td>
-        <td>{this.props.question.content}</td>
+        <td><div dangerouslySetInnerHTML={{ __html: this.props.question.content}}></div></td>
         <td>{this.props.question.answer}</td>
         <td>
           <a href={'/questions/'+this.props.question.id+'/edit'} className="btn btn-primary">Edit</a>
@@ -103,3 +105,5 @@ class QuestionItem extends React.Component {
     );
   }
 }
+
+export default Question;
