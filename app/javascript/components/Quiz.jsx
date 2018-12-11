@@ -1,4 +1,7 @@
-class NewQuiz extends React.Component {
+import React from 'react';
+import axios from 'axios';
+
+class Quiz extends React.Component {
 
   constructor(props) {
     super(props);
@@ -64,8 +67,8 @@ class NewQuiz extends React.Component {
             : ''
           }
         <div className="form-group">
-          <label>Content</label>
-          <input type="text" name="content" value={this.state.content} className="form-control" onChange={this.handleChange}/>
+          <label>Content:</label>
+          <div dangerouslySetInnerHTML={{ __html: this.state.content}}></div>
         </div>
         <div className="form-group">
           <label>Answer</label>
@@ -77,3 +80,5 @@ class NewQuiz extends React.Component {
     </div>)
   }
 }
+
+export default Quiz;

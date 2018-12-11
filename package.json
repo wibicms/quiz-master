@@ -2,6 +2,19 @@
   "name": "quiz-master",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0"
+    "@rails/webpacker": "3.5",
+    "axios": "^0.18.0",
+    "babel-preset-react": "^6.24.1",
+    "draft-js": "^0.10.5",
+    "draft-js-export-html": "^1.2.0",
+    "html-to-draftjs": "^1.4.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-draft-wysiwyg": "^1.12.13",
+    "react_ujs": "^2.4.4"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
   }
 }

@@ -23,6 +23,7 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
+gem 'webpacker'
 gem 'react-rails'
 gem 'jquery-rails'
 
